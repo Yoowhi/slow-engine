@@ -14,6 +14,9 @@ class Scene():
         for gameobject in self.gameobjects:
             gameobject.update()
             
+    def exit(self):
+        self.onExit()
+            
     def addGameObject(self, gameobject):
         self.gameobjects.add(gameobject)
         if gameobject.iscollider:
@@ -24,4 +27,7 @@ class Scene():
         return
         
     def onUpdate(self):
+        return
+        
+    def onExit(self):
         return

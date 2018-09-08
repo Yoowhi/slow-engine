@@ -19,13 +19,13 @@ class Game:
         self.run()
         
     def run(self):
-        self.running = true
+        self.running = True
         while self.running:
             self.clock.tick(int(1000/R_FPS))
             self.tick()
             
     def pause(self):
-        self.running = false
+        self.running = False
             
     def tick(self):
         self.handleEvents()
@@ -35,9 +35,16 @@ class Game:
     def handleEvents(self):
         for event in pg.event.get():
             None
+            
+    def changeScene(self, newscene):
+        self.pause()
+        self.scene.exit()
+        self.scene = newscene
+        self.run()
         
     def drawObjects(self):
         self.screen.fill(COL_DARKGRAY)
         self.scene.gameobjects.draw(self.screen)
         pg.display.flip()
+        
     
