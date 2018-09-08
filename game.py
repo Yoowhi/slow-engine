@@ -38,6 +38,7 @@ class Game:
             
     def changeScene(self, newscene):
         self.pause()
+        #camera pause here
         self.scene.exit()
         self.scene = newscene
         self.run()
