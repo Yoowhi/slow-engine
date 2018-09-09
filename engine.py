@@ -35,14 +35,14 @@ class Engine:
             
     def openScene(self, scene):
         self.pause()
-        #camera pause here
         if isinstance(self.scene, Scene):
             self.scene.exit()
         self.scene = scene
+        self.camera = scene.camera
         
     def render(self):
         self.screen.fill(COL_DARKGRAY)
-        self.scene.gameobjects.draw(self.screen)
+        self.camera.draw(self.scene.gameobjects, self.screen)
         pg.display.flip()
         
     
