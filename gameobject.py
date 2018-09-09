@@ -1,6 +1,6 @@
 from pygame_sdl2.sprite import Sprite, Rect
 from  pygame_sdl2 import Surface
-from constants import TILE_WIDTH, TILE_HEIGHT, COL_GREEN
+from .constants import TILE_WIDTH, TILE_HEIGHT, COL_GREEN
 
 class GameObject(Sprite):
     x, y = None, None

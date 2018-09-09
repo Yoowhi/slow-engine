@@ -1,6 +1,6 @@
 import pygame_sdl2 as pg
-from scene import Scene
-from constants import *
+from .scene import Scene
+from .constants import *
 
 class Engine:
     running = False

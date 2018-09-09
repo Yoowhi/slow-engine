@@ -1,4 +1,4 @@
-from gameobject import GameObject
+from .gameobject import GameObject
 from pygame_sdl2.sprite import Group
 
 class Scene():
