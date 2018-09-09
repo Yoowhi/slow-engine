@@ -33,3 +33,18 @@ class GameObject(Sprite):
         
     def onUpdate(self):
         return
+        
+    def onMouseButtonDown(self, pos, button):
+        return
+        
+    def onMouseButtonUp(self, pos, button):
+        return
+        
+    def onMouseMotion(self, pos, rel, buttons):
+        return
+        
+    def onKeyDown(self, key, mod):
+        return
+        
+    def onKeyUp(self, key, mod):
+        return

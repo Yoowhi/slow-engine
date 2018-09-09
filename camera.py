@@ -11,6 +11,10 @@ class Camera:
         
     def apply(self, target):
         return target.rect.move(self.view.topleft)
+    
+    def getScenePosition(self, pos):
+        return (pos[0] - self.x, pos[1] - self.y)
+        
         
     def setTarget(self, gameobject):
         self.target = gameobject

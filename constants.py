@@ -13,3 +13,5 @@ COL_DARKGRAY = (64, 64, 64)
 
 TILE_WIDTH = 32
 TILE_HEIGHT = 32
+
+from pygame_sdl2.locals import *

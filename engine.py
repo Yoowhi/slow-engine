@@ -31,7 +31,19 @@ class Engine:
         
     def handleEvents(self):
         for event in pg.event.get():
-            None
+            if event.type == MOUSEBUTTONDOWN:
+                pos = self.camera.getScenePosition(event.pos)
+                self.scene.mouseButtonDown(pos, event.button)
+            elif event.type == MOUSEBUTTONUP:
+                pos = self.camera.getScenePosition(event.pos)
+                self.scene.mouseButtonUp(pos, event.button)
+            elif event.type == MOUSEMOTION:
+                pos = self.camera.getScenePosition(event.pos)
+                self.scene.mouseMotion(pos, event.rel, event.buttons)
+            elif event.type == KEYDOWN:
+                self.scene.keyDown(event.key, event.mod)
+            elif event.type == KEYUP:
+                self.scene.keyUp(event.key, event.mod)
             
     def openScene(self, scene):
         self.pause()
