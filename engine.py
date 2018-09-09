@@ -2,7 +2,7 @@ import pygame_sdl2 as pg
 from scene import Scene
 from constants import *
 
-class SlowEngine:
+class Engine:
     running = False
     screen = None
     clock = None
