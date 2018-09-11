@@ -1,16 +1,19 @@
-from .gameobject import GameObject
-from .camera import  Camera
 from pygame_sdl2.sprite import Group
+from pygame_sdl2.event import Event, post
+from .camera import Camera
+from .constants import REQUEST_SOUNDS, REQUEST_PLAYLIST
 
 class Scene():
     gameobjects = None
     colliders = None
     camera = None
+    sounds = None
     
     def __init__(self):
         self.gameobjects = Group()
         self.colliders = Group()
         self.camera = Camera()
+        self.sounds = {}
         self.onStart()
         
     def mouseButtonDown(self, pos, button):
@@ -58,6 +61,17 @@ class Scene():
             
     def bindCamera(self, gameobject):
         self.camera.setTarget(gameobject)
+        
+    def requestSounds(self, names):
+        event = Event(REQUEST_SOUNDS, caller = self, list = names)
+        post(event)
+        
+    def requestPlaylist(self, queue):
+        event = Event(REQUEST_PLAYLIST, list = queue)
+        post(event)
+        
+    def playSound(self, name):
+        self.sounds[name].play()
             
     #USER METHODS
     def onStart(self):
