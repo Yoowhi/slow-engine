@@ -1,6 +1,7 @@
-from .gameobject import GameObject
-from .camera import  Camera
 from pygame_sdl2.sprite import Group
+from pygame_sdl2.event import Event, post
+from .camera import Camera
+from .constants import REQUEST_SOUNDS, REQUEST_PLAYLIST
 
 class Scene():
     gameobjects = None
@@ -58,6 +59,14 @@ class Scene():
             
     def bindCamera(self, gameobject):
         self.camera.setTarget(gameobject)
+        
+    def requestSounds(self, names):
+        event = Event(REQUEST_SOUNDS, caller = self, list = names)
+        post(event)
+        
+    def requestPlaylist(self, names):
+        event = Event(REQUEST_PLAYLIST, caller = self, list = names)
+        post(event)
             
     #USER METHODS
     def onStart(self):

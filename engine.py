@@ -1,5 +1,6 @@
 import pygame_sdl2 as pg
 from .scene import Scene
+from .gameobject import GameObject
 from .constants import *
 from .mixer import Mixer
 
@@ -10,12 +11,17 @@ class Engine:
     scene = None
     camera = None
     mixer = None
+    framerate = None
+    devmode = False
     
-    def __init__(self):
+    def __init__(self, devmode = False):
         pg.import_as_pygame()
         pg.mixer.pre_init(S_DISFREQUENCY, S_SAMPLESIZE, S_CHANNELS, S_BUFFERSIZE)
         pg.init()
         pg.mixer.init()
+        pg.font.init()
+        self.devmode = devmode
+        self.framerate = pg.font.Font(None, 32)
         pg.mixer.music.set_endevent(SONG_ENDS)
         self.mixer = Mixer()
         self.screen = pg.display.set_mode((R_WIDTH, R_HEIGHT))
@@ -40,18 +46,24 @@ class Engine:
             if event.type == MOUSEBUTTONDOWN:
                 pos = self.camera.getScenePosition(event.pos)
                 self.scene.mouseButtonDown(pos, event.button)
-            elif event.type == MOUSEBUTTONUP:
+            if event.type == MOUSEBUTTONUP:
                 pos = self.camera.getScenePosition(event.pos)
                 self.scene.mouseButtonUp(pos, event.button)
-            elif event.type == KEYDOWN:
+            if event.type == KEYDOWN:
                 self.scene.keyDown(event.key, event.mod)
-            elif event.type == KEYUP:
+            if event.type == KEYUP:
                 self.scene.keyUp(event.key, event.mod)
             if event.type == MOUSEMOTION:
                 pos = self.camera.getScenePosition(event.pos)
                 self.scene.mouseMotion(pos, event.rel, event.buttons)
             if event.type == SONG_ENDS:
                 self.mixer.next()
+            if event.type == REQUEST_SOUNDS:
+                #resorces selection goes here
+                event.caller.sounds = None
+            if event.type == REQUEST_PLAYLIST:
+                #resorces selection goes here
+                event.caller.playlist = None
             
     def openScene(self, scene):
         self.pause()
@@ -63,6 +75,8 @@ class Engine:
     def render(self):
         self.screen.fill(COL_DARKGRAY)
         self.camera.draw(self.scene.gameobjects, self.screen)
+        if self.devmode:
+            fpssurf = self.framerate.render(str(int(self.clock.get_fps())), True, COL_GREEN)
+            self.screen.blit(fpssurf, (0, 0))
         pg.display.flip()
-        
     
