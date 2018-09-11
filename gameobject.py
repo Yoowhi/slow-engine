@@ -36,6 +36,9 @@ class GameObject(Sprite):
         event = Event(REQUEST_SOUNDS, caller = self, list = names)
         post(event)
         
+    def playSound(self, name):
+        self.sounds[name].play()
+        
     #USER METHODS
     def onStart(self):
         return

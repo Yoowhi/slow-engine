@@ -63,7 +63,7 @@ class Engine:
                 event.caller.sounds = None
             if event.type == REQUEST_PLAYLIST:
                 #resorces selection goes here
-                event.caller.playlist = None
+                self.mixer.setPlaylist() #queue from resources
             
     def openScene(self, scene):
         self.pause()

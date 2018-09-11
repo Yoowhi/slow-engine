@@ -7,11 +7,13 @@ class Scene():
     gameobjects = None
     colliders = None
     camera = None
+    sounds = None
     
     def __init__(self):
         self.gameobjects = Group()
         self.colliders = Group()
         self.camera = Camera()
+        self.sounds = {}
         self.onStart()
         
     def mouseButtonDown(self, pos, button):
@@ -64,9 +66,12 @@ class Scene():
         event = Event(REQUEST_SOUNDS, caller = self, list = names)
         post(event)
         
-    def requestPlaylist(self, names):
-        event = Event(REQUEST_PLAYLIST, caller = self, list = names)
+    def requestPlaylist(self, queue):
+        event = Event(REQUEST_PLAYLIST, list = queue)
         post(event)
+        
+    def playSound(self, name):
+        self.sounds[name].play()
             
     #USER METHODS
     def onStart(self):
