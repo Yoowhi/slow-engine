@@ -3,6 +3,7 @@ from .scene import Scene
 from .gameobject import GameObject
 from .constants import *
 from .mixer import Mixer
+from .resmanager import ResourceManager
 
 class Engine:
     running = False
@@ -14,7 +15,7 @@ class Engine:
     framerate = None
     devmode = False
     
-    def __init__(self, devmode = False):
+    def __init__(self, devmode = False, soundspath = "", trackspath = "", imagespath = ""):
         pg.import_as_pygame()
         pg.mixer.pre_init(S_DISFREQUENCY, S_SAMPLESIZE, S_CHANNELS, S_BUFFERSIZE)
         pg.init()
@@ -22,8 +23,9 @@ class Engine:
         pg.font.init()
         self.devmode = devmode
         self.framerate = pg.font.Font(None, 32)
-        pg.mixer.music.set_endevent(SONG_ENDS)
+        pg.mixer.music.set_endevent(TRACK_ENDS)
         self.mixer = Mixer()
+        self.resmanager = ResourceManager(soundspath, trackspath, imagespath)
         self.screen = pg.display.set_mode((R_WIDTH, R_HEIGHT))
         self.clock = pg.time.Clock()
         
@@ -56,14 +58,12 @@ class Engine:
             if event.type == MOUSEMOTION:
                 pos = self.camera.getScenePosition(event.pos)
                 self.scene.mouseMotion(pos, event.rel, event.buttons)
-            if event.type == SONG_ENDS:
+            if event.type == TRACK_ENDS:
                 self.mixer.next()
-            if event.type == REQUEST_SOUNDS:
-                #resorces selection goes here
-                event.caller.sounds = None
             if event.type == REQUEST_PLAYLIST:
-                #resorces selection goes here
-                self.mixer.setPlaylist() #queue from resources
+                playlist = self.resmanager.getPlaylist(event.list)
+                self.mixer.setPlaylist(playlist)
+                self.mixer.next()
             
     def openScene(self, scene):
         self.pause()
@@ -74,6 +74,7 @@ class Engine:
         
     def render(self):
         self.screen.fill(COL_DARKGRAY)
+        
         self.camera.draw(self.scene.gameobjects, self.screen)
         if self.devmode:
             fpssurf = self.framerate.render(str(int(self.clock.get_fps())), True, COL_GREEN)

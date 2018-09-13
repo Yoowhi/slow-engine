@@ -1,7 +1,8 @@
 from pygame_sdl2.sprite import Sprite, Rect
 from  pygame_sdl2 import Surface
 from  pygame_sdl2.event import Event, post
-from .constants import TILE_WIDTH, TILE_HEIGHT, COL_GREEN, REQUEST_SOUNDS
+from pygame_sdl2.mixer import Sound
+from .constants import TILE_WIDTH, TILE_HEIGHT, COL_GREEN
 
 class GameObject(Sprite):
     x, y = None, None
@@ -10,8 +11,8 @@ class GameObject(Sprite):
     rect = None
     sounds = None
     
-    def __init__(self, image = None, place = (None, None), iscollider = False):
-        self.sounds = {}
+    def __init__(self, image = None, sounds = {}, place = (None, None), iscollider = False):
+        self.sounds = sounds
         Sprite.__init__(self)
         if image != None:
             self.image = image
@@ -32,12 +33,11 @@ class GameObject(Sprite):
         self.rect.y = self.y
         
     #METHODS FOR USER CALLS
-    def requestSounds(self, names):
-        event = Event(REQUEST_SOUNDS, caller = self, list = names)
-        post(event)
-        
-    def playSound(self, name):
-        self.sounds[name].play()
+    def playSound(self, sound):
+        if isinstance(sound, Sound):
+            sound.play()
+        elif isinstance(sound, str):
+            self.sounds[sound].play()
         
     #USER METHODS
     def onStart(self):
