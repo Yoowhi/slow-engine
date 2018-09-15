@@ -4,6 +4,7 @@ from .gameobject import GameObject
 from .constants import *
 from .mixer import Mixer
 from .resmanager import ResourceManager
+from .guielements import *
 
 class Engine:
     running = False
@@ -22,7 +23,7 @@ class Engine:
         pg.mixer.init()
         pg.font.init()
         self.devmode = devmode
-        self.framerate = pg.font.Font(None, 32)
+        self.framerate = Label((0, 0), fontsize = 32)
         pg.mixer.music.set_endevent(TRACK_ENDS)
         self.mixer = Mixer()
         self.resmanager = ResourceManager(soundspath, trackspath, imagespath)
@@ -77,7 +78,7 @@ class Engine:
         
         self.camera.draw(self.scene.gameobjects, self.screen)
         if self.devmode:
-            fpssurf = self.framerate.render(str(int(self.clock.get_fps())), True, COL_GREEN)
-            self.screen.blit(fpssurf, (0, 0))
+            self.framerate.changeText(str(int(self.clock.get_fps())))
+            self.screen.blit(self.framerate.image, self.framerate.get_place())
         pg.display.flip()
     
